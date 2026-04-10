@@ -1,0 +1,210 @@
+/* Variables de Colores Corporativos */
+:root {
+    --color-principal: #2E1A47; /* Morado oscuro */
+    --color-acento: #F2B705;    /* Amarillo / dorado */
+    --color-base: #FFFFFF;      /* Blanco */
+    --color-texto: #333333;
+}
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--color-base);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+/* --- Navegación --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-principal);
+    padding: 15px 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    height: 50px; /* Ajusta según el tamaño exacto que desees para el logo */
+    width: auto;
+}
+
+.login-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-base);
+    border: 2px solid var(--color-acento);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-acento);
+    color: var(--color-principal);
+}
+
+.btn-solid {
+    background-color: var(--color-acento);
+    color: var(--color-principal);
+    border: 2px solid var(--color-acento);
+}
+
+.btn-solid:hover {
+    background-color: #d9a404;
+    border-color: #d9a404;
+}
+
+/* --- Hero Section --- */
+.hero {
+    background-color: var(--color-principal);
+    color: var(--color-base);
+    text-align: center;
+    padding: 120px 20px;
+    border-bottom: 8px solid var(--color-acento);
+    background-image: linear-gradient(rgba(46, 26, 71, 0.9), rgba(46, 26, 71, 0.9)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop'); /* Imagen de fondo sutil de gimnasio */
+    background-size: cover;
+    background-position: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    color: var(--color-acento);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.hero h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    font-weight: 400;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-style: italic;
+    color: #e0e0e0;
+}
+
+/* --- Contenedores Generales --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.section-title {
+    color: var(--color-principal);
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-acento);
+    margin: 10px auto 0;
+}
+
+/* --- Sección About (Tarjetas) --- */
+.about {
+    background-color: #f4f4f9;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: var(--color-base);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    border-top: 5px solid var(--color-acento);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    color: var(--color-principal);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.card p {
+    color: #555;
+    font-size: 1.05rem;
+}
+
+/* --- Sección Visión --- */
+.vision {
+    background-color: var(--color-base);
+}
+
+.vision-box {
+    background-color: var(--color-principal);
+    color: var(--color-base);
+    padding: 60px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(46, 26, 71, 0.2);
+    position: relative;
+}
+
+.vision-box h2 {
+    color: var(--color-acento);
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+.vision-box p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #1a0f2e; /* Un tono más oscuro del principal para dar profundidad */
+    color: var(--color-base);
+    text-align: center;
+    padding: 25px;
+    border-top: 3px solid var(--color-acento);
+    font-size: 0.9rem;
+}

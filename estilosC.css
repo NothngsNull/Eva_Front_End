@@ -1,0 +1,420 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    /* Cambio al color sugerido: Azul */
+    background: linear-gradient(135deg, #0056b3, #001f4d);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.contenedor {
+    width: 360px;
+    background-color: #ffffff;
+    padding: 35px 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.contenedor-registro {
+    width: 750px; 
+    max-width: 100%;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 25px auto;
+    width: 260px; 
+}
+
+h1 {
+    color: #0056b3; /* Azul principal */
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+form {
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+    display: block;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 18px; 
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+textarea {
+    resize: none;
+    height: 115px;
+}
+
+select {
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Flecha SVG cambiada a azul (#0056b3) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230056b3%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4); /* Resplandor azul celeste */
+}
+
+.form-columnas { display: flex; }
+.columna { flex: 1; display: flex; flex-direction: column; }
+.columna-izq { padding-right: 25px; border-right: 2px solid #d9e6f2; }
+.columna-der { padding-left: 25px; }
+
+.separador-horizontal {
+    border: 0;
+    height: 2px;
+    background-color: #d9e6f2;
+    margin: 5px 0 20px 0; 
+    border-radius: 2px; 
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Botón azul brillante */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px; 
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Azul oscuro al pasar el mouse */
+}
+
+.enlaces { margin-top: 20px; text-align: center; }
+.enlaces a { color: #0056b3; font-weight: bold; text-decoration: none; }
+.enlaces span { margin: 0 10px; color: #999; }
+.enlaces a:hover { text-decoration: underline; }
+
+@media (max-width: 650px) {
+    .form-columnas { flex-direction: column; }
+    .columna-izq {
+        border-right: none; border-bottom: 2px solid #d9e6f2; 
+        padding-right: 0; padding-bottom: 25px; margin-bottom: 25px;
+    }
+    .columna-der { padding-left: 0; }
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS DEL DASHBOARD USUARIO
+   ========================================= */
+
+/* Reseteamos el body SOLO para el dashboard */
+body.dashboard-body {
+    display: block;
+    padding: 0;
+    background: #eef4f9; /* Fondo azul muy claro */
+    height: auto;
+}
+
+/* Header */
+.dash-header {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 10px 40px;
+    border-bottom: 3px solid #0056b3;
+}
+
+.dash-logo img {
+    height: 50px;
+    width: auto;
+    margin: 0;
+}
+
+.dash-title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.dash-title h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #0056b3;
+    letter-spacing: 1px;
+}
+
+/* Navegación */
+.dash-nav {
+    background-color: #0056b3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #cce5ff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    padding-bottom: 3px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-secundario, .btn-primario {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0;
+    width: auto;
+}
+
+.btn-secundario {
+    background-color: #ffffff;
+    color: #0056b3;
+    border: 1px solid #ffffff;
+}
+
+.btn-primario.cerrar-sesion {
+    background-color: #003d82;
+    color: #ffffff;
+    border: 1px solid #003d82;
+}
+
+/* Sección Principal (Main) */
+.dash-main {
+    padding: 30px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.welcome-text {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* Grid Layout (Boceto) */
+.grid-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #ffffff;
+    border: 1px solid #dce8f5;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    color: #0056b3;
+    border-bottom: 2px solid #eef4f9;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+/* Tarjeta Perfil */
+.perfil-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    background-color: #eef4f9;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #0056b3;
+}
+
+.avatar-icon {
+    font-size: 30px;
+}
+
+.datos p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.objetivos h4 {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.objetivos ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Tarjeta Reservas */
+.reservas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reserva-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f8fbff;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 4px solid #0056b3;
+}
+
+.reserva-item p {
+    font-size: 13px;
+    color: #444;
+}
+
+/* Tablas de Clases */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px 5px;
+    font-size: 14px;
+    color: #444;
+    border-bottom: 1px solid #eef4f9;
+}
+
+.btn-reservar {
+    background-color: #eef4f9;
+    color: #0056b3;
+    border: 1px solid #0056b3;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: 0;
+    width: auto;
+}
+
+.btn-reservar:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+
+/* Adaptabilidad Móvil */
+@media (max-width: 900px) {
+    .grid-top {
+        grid-template-columns: 1fr;
+    }
+    .dash-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .table-full td {
+        display: block;
+        text-align: center;
+        border: none;
+    }
+    .table-full tr {
+        display: block;
+        border-bottom: 2px solid #eef4f9;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Estilos para la barra de progreso */
+.progress-container {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.progress-container h3 {
+    color: #0056b3;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #eef4f9;
+    border-radius: 10px;
+    overflow: hidden; /* Para que la barra interna no se salga */
+    margin-bottom: 10px;
+}
+
+.progress-bar-filled {
+    height: 100%;
+    background-color: #0056b3; /* Usando el azul principal */
+    border-radius: 10px; /* Bordes redondeados también en el llenado */
+    transition: width 0.3s ease-in-out; /* Animación suave si la anchura cambia */
+}
+
+.progress-container p {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+/* Separación extra para la tarjeta inferior de horarios */
+.card-bottom {
+    margin-top: 40px;
+}
