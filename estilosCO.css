@@ -1,0 +1,166 @@
+/* =========================================
+   1. VARIABLES Y RESET (Puntos por Orden)
+   ========================================= */
+   :root {
+    --verde-principal: #2d6a4f;
+    --verde-oscuro: #1b4332;
+    --verde-claro: #d8f3dc;
+    --fondo-dash: #f0fdf4;
+    --blanco: #ffffff;
+    --sombra: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1b4332, #081c15); /* Tu degradado original */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+/* =========================================
+   2. ESTILOS DEL LOGIN (Para que no se rompa)
+   ========================================= */
+.contenedor {
+    width: 360px;
+    background-color: var(--blanco);
+    padding: 35px 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.logo { display: block; margin: 0 auto 25px auto; width: 260px; }
+h1 { color: var(--verde-principal); margin-bottom: 25px; font-size: 24px; }
+form { text-align: left; }
+label { font-weight: bold; color: #333; margin-bottom: 6px; display: block; }
+
+input, select {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 18px; 
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover { background-color: var(--verde-oscuro); }
+
+.enlaces { margin-top: 20px; text-align: center; }
+.enlaces a { color: var(--verde-principal); font-weight: bold; text-decoration: none; }
+
+/* =========================================
+   3. ESTILOS ESPECÍFICOS DEL DASHBOARD
+   ========================================= */
+body.dashboard-body {
+    display: block; /* Rompe el flex del login para el dashboard */
+    padding: 0;
+    background: var(--fondo-dash);
+    height: auto;
+}
+
+.dash-header {
+    background: var(--blanco);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 4px solid var(--verde-principal);
+}
+
+.dash-nav {
+    background: var(--verde-principal);
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-links { display: flex; list-style: none; gap: 20px; }
+.nav-links a { color: var(--verde-claro); text-decoration: none; font-weight: bold; }
+.nav-links a.active { color: var(--blanco); border-bottom: 2px solid var(--blanco); }
+
+/* Banner de Gestión (Lo que pide la rúbrica) */
+.clase-activa-banner {
+    background: var(--blanco);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1320px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--sombra);
+    border-left: 6px solid var(--verde-principal);
+}
+
+.btn-gestion-clase {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Grid Principal */
+.dash-main { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
+
+.grid-coach {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 25px;
+}
+
+.card {
+    background: var(--blanco);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+}
+
+/* Gestión de Alumnos con Alineación Perfecta */
+.alumno-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.alumno-info { display: flex; align-items: center; gap: 10px; }
+.avatar-sm { background: var(--verde-claro); padding: 5px; border-radius: 50%; }
+
+.badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+.badge-presente { background: #e8f5e9; color: #2e7d32; }
+.badge-pendiente { background: #fff3e0; color: #ef6c00; }
+
+.alumno-acciones { display: flex; gap: 8px; }
+.btn-icon { background: none; border: 1px solid #ddd; cursor: pointer; padding: 4px; border-radius: 4px; }
+
+/* Tabla de Horario */
+.table-coach { width: 100%; border-collapse: collapse; text-align: center; }
+.table-coach th { background: var(--fondo-dash); padding: 10px; border-bottom: 2px solid var(--verde-claro); }
+.table-coach td { padding: 15px; border-bottom: 1px solid #eee; }
+
+/* Botones de Cabecera */
+.btn-primario { background: #ff4d4d; color: white; padding: 6px 15px; border-radius: 4px; text-decoration: none; font-size: 13px; }
+.btn-secundario { background: var(--blanco); color: var(--verde-principal); padding: 6px 15px; border-radius: 4px; border: 1px solid var(--verde-principal); cursor: pointer; }

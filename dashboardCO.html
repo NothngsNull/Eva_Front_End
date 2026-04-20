@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Coach - SportClub</title>
+    <link rel="stylesheet" href="estilosCO.css">
+</head>
+<body class="dashboard-body">
+
+    <header class="dash-header">
+        <div class="dash-logo">
+            <img src="logo.png" alt="SportClub">
+        </div>
+        <div class="dash-title">
+            <h1>DASHBOARD COACH</h1>
+        </div>
+    </header>
+
+    <nav class="dash-nav">
+        <ul class="nav-links">
+            <li><a href="#" class="active">Inicio</a></li>
+            <li><a href="#">Mis Alumnos</a></li>
+            <li><a href="#">Mi Horario</a></li>
+            <li><a href="#">Reportes</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-secundario">Editar Perfil</button>
+            <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <main class="dash-main">
+        <section class="clase-activa-banner">
+            <div class="info-clase">
+                <h2>Panel de Entrenador</h2>
+                <p>Bienvenido, Coach <strong id="coach-name">[Nombre]</strong></p>
+            </div>
+            <div class="control-asistencia">
+                <span>Clase en curso: <strong>Spinning (18:00)</strong></span>
+                <button class="btn-gestion-clase">Finalizar Clase</button>
+            </div>
+        </section>
+
+        <div class="grid-coach">
+            <section class="card">
+                <h3>Mis Alumnos (Control de Asistencia)</h3>
+                <div class="alumnos-lista">
+                    <article class="alumno-item">
+                        <div class="alumno-info">
+                            <span class="avatar-sm">👤</span>
+                            <div>
+                                <p class="nombre">Carlos Gómez</p>
+                                <span class="badge badge-presente">Presente</span>
+                            </div>
+                        </div>
+                        <div class="alumno-acciones">
+                            <button class="btn-icon">📝</button>
+                            <button class="btn-icon danger">❌</button>
+                        </div>
+                    </article>
+                    <article class="alumno-item">
+                        <div class="alumno-info">
+                            <span class="avatar-sm">👤</span>
+                            <div>
+                                <p class="nombre">Ana Ruiz</p>
+                                <span class="badge badge-pendiente">Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="alumno-acciones">
+                            <button class="btn-icon">📝</button>
+                            <button class="btn-icon success">✅</button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>Mi Horario (Clases Asignadas)</h3>
+                <div class="table-responsive">
+                    <table class="table-coach">
+                        <thead>
+                            <tr>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                                <th>Gestión</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Spinning</strong><br>18:00</td>
+                                <td>--</td>
+                                <td><strong>Spinning</strong><br>10:00</td>
+                                <td>--</td>
+                                <td><strong>Boxeo</strong><br>19:00</td>
+                                <td><button class="btn-table">Detalle</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.role !== 'coach') {
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('coach-name').textContent = user.name;
+            }
+        });
+    </script>
+</body>
+</html>
