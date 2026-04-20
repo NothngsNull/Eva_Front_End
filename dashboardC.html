@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Usuario - SportClub</title>
+    <link rel="stylesheet" href="estilosC.css">
+</head>
+<body class="dashboard-body">
+
+    <header class="dash-header">
+        <div class="dash-logo">
+            <img src="logo.png" alt="SportClub">
+        </div>
+        <div class="dash-title">
+            <h1>DASHBOARD USUARIO</h1>
+        </div>
+    </header>
+
+    <nav class="dash-nav">
+        <ul class="nav-links">
+            <li><a href="#" class="active">Inicio</a></li>
+            <li><a href="#">Clases</a></li>
+            <li><a href="#">Reservas</a></li>
+            <li><a href="#">Mi Progreso</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-secundario">Editar Perfil</button>
+            <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <main class="dash-main">
+        <h2 class="welcome-text">Bienvenido a SportClub</h2>
+
+        <div class="grid-top">
+            
+            <div class="card">
+                <h3>Mi Perfil</h3>
+                <div class="perfil-info">
+                    <div class="avatar">
+                        <span class="avatar-icon">👤</span>
+                    </div>
+                    <div class="datos">
+                        <p><strong>Nombre:</strong> Juan Pérez</p>
+                        <p><strong>Email:</strong> juan@mail.com</p>
+                    </div>
+                </div>
+                <div class="objetivos">
+                    <h4>Objetivos Personales:</h4>
+                    <ul>
+                        <li>Mejorar resistencia cardiovascular</li>
+                        <li>Ganar masa muscular</li>
+                        <li>Asistir 3 veces por semana</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="progress-container">
+                <h3>Tu Progreso General (Inventado)</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-filled" style="width: 60%;"></div>
+                </div>
+                <p>Completado: 6 de 10 sesiones inventadas</p>
+            </div>
+            <div class="card">
+                <h3>Mis Reservas Próximas</h3>
+                <div class="reservas-lista">
+                    <div class="reserva-item">
+                        <span class="reserva-dot"></span>
+                        <p><strong>Clase de CrossFit</strong> <br> Lunes 18:00 hrs</p>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-dot"></span>
+                        <p><strong>Spinning</strong> <br> Miércoles 08:00 hrs</p>
+                    </div>
+                    <div class="reserva-item">
+                        <span class="reserva-dot"></span>
+                        <p><strong>Yoga Funcional</strong> <br> Viernes 19:30 hrs</p>
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+
+            <div class="card">
+                <h3>Clases Disponibles</h3>
+                <table class="table-quick">
+                    <tr>
+                        <td>Spinning</td>
+                        <td><button class="btn-reservar">Reservar</button></td>
+                    </tr>
+                    <tr>
+                        <td>CrossFit</td>
+                        <td><button class="btn-reservar">Reservar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Yoga</td>
+                        <td><button class="btn-reservar">Reservar</button></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        
+        <div class="card card-bottom">
+            <h3>Horarios Completos - Clases Disponibles</h3>
+            <table class="table-full">
+                <tr>
+                    <td><strong>Spinning</strong></td>
+                    <td>Lunes / 08:00 / 18:00</td>
+                    <td>Boxeo</td>
+                    <td>Sáb / 10:00</td>
+                    <td><button class="btn-reservar">Reservar</button></td>
+                </tr>
+                <tr>
+                    <td><strong>CrossFit</strong></td>
+                    <td>Miércoles / 10:00 / 19:00</td>
+                    <td>HIIT</td>
+                    <td>Jueves / 10:00</td>
+                    <td><button class="btn-reservar">Reservar</button></td>
+                </tr>
+            </table>
+        </div>
+
+        
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 6) Mostrar el nombre del usuario en el dashboard
+            const userData = JSON.parse(localStorage.getItem("user"));
+        
+            if (!userData) {
+                window.location.href = 'index.html'; // Protege la página si no hay login
+                return;
+            }
+        
+            // Busca dónde poner el nombre según tu HTML actual
+            const namePlaceholder = document.querySelector('.welcome-text strong') || 
+                                   document.querySelector('.datos p strong');
+            
+            if (namePlaceholder) {
+                namePlaceholder.parentElement.innerHTML = namePlaceholder.tagName === 'STRONG' 
+                    ? userData.name 
+                    : `<strong>Nombre:</strong> ${userData.name}`;
+            }
+        });
+        
+        // Configura el botón de cerrar sesión
+        document.querySelector('.cerrar-sesion')?.addEventListener('click', () => {
+            localStorage.removeItem("user");
+        });
+        </script>
+
+</body>
+</html>
