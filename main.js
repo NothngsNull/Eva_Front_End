@@ -1,85 +1,180 @@
 // ============================================================
 //  SportClub - main.js
-//  Maneja: Login (Admin / Coach / Usuario) + Registro Usuario
+//  Maneja: Login + Registro + Recuperar contraseña
+//  Validaciones: inline por campo, sin alert()
 //  API Base: http://localhost:3000
 // ============================================================
 
 const API_BASE = 'http://localhost:3000';
 
-// ------------------------------------------------------------
-//  UTILIDADES GENERALES
-// ------------------------------------------------------------
+// ============================================================
+//  UTILIDADES DE VALIDACIÓN VISUAL
+// ============================================================
 
 /**
- * Muestra un mensaje de error en el párrafo #error-msg del formulario.
- * Si no existe el elemento, lo ignora silenciosamente.
+ * Muestra un error inline bajo un campo específico.
  */
-function mostrarError(mensaje) {
-    const errorMsg = document.getElementById('error-msg');
-    if (errorMsg) {
-        errorMsg.textContent = mensaje;
-        errorMsg.style.display = 'block';
+function mostrarCampoError(id, msg) {
+    const span = document.getElementById(id);
+    if (!span) return;
+    span.textContent = msg;
+    span.classList.add('visible');
+
+    // Marca el input/select/textarea anterior como inválido
+    const input = span.previousElementSibling;
+    if (input && ['INPUT', 'SELECT', 'TEXTAREA'].includes(input.tagName)) {
+        input.classList.add('input-invalido');
+        input.classList.remove('input-valido');
     }
 }
 
 /**
- * Oculta el mensaje de error.
+ * Limpia el error inline de un campo específico.
  */
-function ocultarError() {
-    const errorMsg = document.getElementById('error-msg');
-    if (errorMsg) {
-        errorMsg.style.display = 'none';
-        errorMsg.textContent = '';
+function limpiarCampoError(id) {
+    const span = document.getElementById(id);
+    if (!span) return;
+    span.textContent = '';
+    span.classList.remove('visible');
+
+    const input = span.previousElementSibling;
+    if (input && ['INPUT', 'SELECT', 'TEXTAREA'].includes(input.tagName)) {
+        input.classList.remove('input-invalido', 'input-valido');
     }
 }
 
 /**
- * Deshabilita o habilita el botón submit para evitar doble envío.
+ * Marca un campo como válido visualmente.
+ */
+function marcarValido(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.classList.remove('input-invalido');
+    input.classList.add('input-valido');
+}
+
+/**
+ * Muestra el error general de API (#error-msg).
+ */
+function mostrarErrorGeneral(msg) {
+    const el = document.getElementById('error-msg');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+/**
+ * Oculta el error general de API.
+ */
+function ocultarErrorGeneral() {
+    const el = document.getElementById('error-msg');
+    if (!el) return;
+    el.style.display = 'none';
+    el.textContent = '';
+}
+
+/**
+ * Muestra mensaje de éxito (#success-msg).
+ */
+function mostrarExito(msg) {
+    const el = document.getElementById('success-msg');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+/**
+ * Deshabilita o habilita el botón submit mientras carga.
  */
 function setBotonCargando(form, cargando) {
     const btn = form.querySelector('button[type="submit"]');
     if (!btn) return;
-    btn.disabled = cargando;
-    btn.textContent = cargando ? 'Cargando...' : btn.dataset.textoOriginal || btn.textContent;
-    if (!btn.dataset.textoOriginal) {
+    if (cargando) {
         btn.dataset.textoOriginal = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Cargando...';
+    } else {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.textoOriginal || btn.textContent;
     }
 }
 
-// ------------------------------------------------------------
-//  PARTE 1 — LOGIN
-//  Formularios: #formAdmin | #formCoach | #formUser
-// ------------------------------------------------------------
+// ============================================================
+//  HELPERS DE VALIDACIÓN
+// ============================================================
+
+/** Valida formato de email */
+function esEmailValido(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 /**
- * Rutas de redirección según el rol devuelto por la API.
- * Roles posibles según el README: 'admin' | 'coach' | 'user'
+ * Agrega limpieza de error en tiempo real al escribir en un campo.
  */
+function agregarLimpiezaEnTiempoReal(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const eventos = input.tagName === 'SELECT' ? ['change'] : ['input'];
+    eventos.forEach(evento => {
+        input.addEventListener(evento, () => {
+            if (input.value.trim() !== '') {
+                limpiarCampoError(errorId);
+            }
+        });
+    });
+}
+
+// ============================================================
+//  PARTE 1 — LOGIN
+// ============================================================
+
 const RUTAS_POR_ROL = {
     admin: 'dashboardA.html',
     coach: 'dashboardCO.html',
     user:  'dashboardC.html'
 };
 
-/**
- * Lógica principal de login.
- * Consume POST /api/auth/login
- * Respuesta esperada: { ok: true, data: { token, user: { id, full_name, email, role } } }
- */
-async function manejarLogin(e) {
-    e.preventDefault();
-    ocultarError();
-    setBotonCargando(e.target, true);
+function validarLogin() {
+    let valido = true;
 
     const email    = document.getElementById('email')?.value.trim();
     const password = document.getElementById('password')?.value.trim();
 
-    // Validación mínima en cliente
-    if (!email || !password) {
-        mostrarError('Por favor completa todos los campos.');
-        setBotonCargando(e.target, false);
-        return;
+    limpiarCampoError('error-email');
+    if (!email) {
+        mostrarCampoError('error-email', 'El correo electrónico es obligatorio.');
+        valido = false;
+    } else if (!esEmailValido(email)) {
+        mostrarCampoError('error-email', 'Ingresa un correo electrónico válido.');
+        valido = false;
+    } else {
+        marcarValido('email');
     }
+
+    limpiarCampoError('error-password');
+    if (!password) {
+        mostrarCampoError('error-password', 'La contraseña es obligatoria.');
+        valido = false;
+    } else if (password.length < 6) {
+        mostrarCampoError('error-password', 'La contraseña debe tener al menos 6 caracteres.');
+        valido = false;
+    } else {
+        marcarValido('password');
+    }
+
+    return valido;
+}
+
+async function manejarLogin(e) {
+    e.preventDefault();
+    ocultarErrorGeneral();
+
+    if (!validarLogin()) return;
+
+    setBotonCargando(e.target, true);
+
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     try {
         const response = await fetch(`${API_BASE}/api/auth/login`, {
@@ -88,7 +183,6 @@ async function manejarLogin(e) {
             body: JSON.stringify({ email, password })
         });
 
-        // Manejo de errores HTTP (ej: 500, 404)
         if (!response.ok && response.status !== 400 && response.status !== 401) {
             throw new Error(`Error del servidor: ${response.status}`);
         }
@@ -96,116 +190,147 @@ async function manejarLogin(e) {
         const dataRes = await response.json();
 
         if (dataRes.ok) {
-            // ✅ Login exitoso — guardamos token y usuario
             const { token, user } = dataRes.data;
-
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
 
-            // Redirigimos según rol
             const destino = RUTAS_POR_ROL[user.role];
-
             if (destino) {
                 window.location.href = destino;
             } else {
-                // Rol desconocido — no redirigimos a ciegas
-                mostrarError(`Rol desconocido: "${user.role}". Contacta al administrador.`);
+                mostrarErrorGeneral(`Rol desconocido: "${user.role}". Contacta al administrador.`);
             }
-
         } else {
-            // ❌ Credenciales incorrectas u otro error controlado por la API
-            mostrarError(dataRes.message || 'Credenciales incorrectas. Intenta nuevamente.');
+            // Credenciales incorrectas — borde rojo en ambos campos + mensaje general
+            mostrarCampoError('error-email', ' ');
+            mostrarCampoError('error-password', ' ');
+            mostrarErrorGeneral(dataRes.message || 'Correo o contraseña incorrectos.');
         }
 
     } catch (error) {
         console.error('[SportClub] Error en login:', error);
-
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            mostrarError('No se pudo conectar con el servidor. Verifica que el backend esté activo.');
+            mostrarErrorGeneral('No se pudo conectar con el servidor. Verifica que el backend esté activo.');
         } else {
-            mostrarError('Ocurrió un error inesperado. Intenta nuevamente.');
+            mostrarErrorGeneral('Ocurrió un error inesperado. Intenta nuevamente.');
         }
     } finally {
         setBotonCargando(e.target, false);
     }
 }
 
-// ------------------------------------------------------------
-//  PARTE 2 — REGISTRO DE USUARIO
-//  Formulario: #formRegister
-//  Consume POST /api/auth/register
-// ------------------------------------------------------------
+// ============================================================
+//  PARTE 2 — REGISTRO
+// ============================================================
 
-/**
- * Lógica de registro.
- * Mapea los campos del formulario al body que espera la API.
- *
- * Body enviado:
- * {
- *   full_name, email, password,
- *   birth_date,              ← calculada desde la edad ingresada
- *   metadata: {
- *     sports: [{ name, frequency_per_week }],
- *     objetivo, nivel, info_adicional
- *   }
- * }
- */
-async function manejarRegistro(e) {
-    e.preventDefault();
-    ocultarError();
-    setBotonCargando(e.target, true);
+function validarRegistro() {
+    let valido = true;
 
-    // --- Lectura de campos ---
     const nombre          = document.getElementById('nombre')?.value.trim();
     const edad            = document.getElementById('edad')?.value.trim();
-    const practicaDeporte = document.getElementById('deporte')?.value;          // 'si' | 'no' | ''
-    const objetivo        = document.getElementById('objetivo')?.value.trim();
-    const nivel           = document.getElementById('nivel')?.value;
     const email           = document.getElementById('email')?.value.trim();
     const password        = document.getElementById('password')?.value.trim();
     const passwordConfirm = document.getElementById('password_confirm')?.value.trim();
+
+    // Nombre
+    limpiarCampoError('error-nombre');
+    if (!nombre) {
+        mostrarCampoError('error-nombre', 'El nombre es obligatorio.');
+        valido = false;
+    } else if (nombre.length < 2) {
+        mostrarCampoError('error-nombre', 'El nombre debe tener al menos 2 caracteres.');
+        valido = false;
+    } else {
+        marcarValido('nombre');
+    }
+
+    // Edad (opcional, pero si se ingresa debe ser válida)
+    limpiarCampoError('error-edad');
+    if (edad !== '') {
+        const edadNum = Number(edad);
+        if (isNaN(edadNum) || edadNum < 5 || edadNum > 120) {
+            mostrarCampoError('error-edad', 'Ingresa una edad válida (entre 5 y 120).');
+            valido = false;
+        } else {
+            marcarValido('edad');
+        }
+    }
+
+    // Email
+    limpiarCampoError('error-email');
+    if (!email) {
+        mostrarCampoError('error-email', 'El correo electrónico es obligatorio.');
+        valido = false;
+    } else if (!esEmailValido(email)) {
+        mostrarCampoError('error-email', 'Ingresa un correo electrónico válido. Ej: usuario@mail.com');
+        valido = false;
+    } else {
+        marcarValido('email');
+    }
+
+    // Contraseña
+    limpiarCampoError('error-password');
+    if (!password) {
+        mostrarCampoError('error-password', 'La contraseña es obligatoria.');
+        valido = false;
+    } else if (password.length < 6) {
+        mostrarCampoError('error-password', 'La contraseña debe tener al menos 6 caracteres.');
+        valido = false;
+    } else {
+        marcarValido('password');
+    }
+
+    // Confirmar contraseña
+    limpiarCampoError('error-password-confirm');
+    if (!passwordConfirm) {
+        mostrarCampoError('error-password-confirm', 'Debes repetir la contraseña.');
+        valido = false;
+    } else if (password && passwordConfirm !== password) {
+        mostrarCampoError('error-password-confirm', 'Las contraseñas no coinciden.');
+        valido = false;
+    } else if (passwordConfirm) {
+        marcarValido('password_confirm');
+    }
+
+    return valido;
+}
+
+async function manejarRegistro(e) {
+    e.preventDefault();
+    ocultarErrorGeneral();
+
+    if (!validarRegistro()) return;
+
+    setBotonCargando(e.target, true);
+
+    const nombre          = document.getElementById('nombre').value.trim();
+    const edad            = document.getElementById('edad')?.value.trim();
+    const practicaDeporte = document.getElementById('deporte')?.value;
+    const objetivo        = document.getElementById('objetivo')?.value.trim();
+    const nivel           = document.getElementById('nivel')?.value;
+    const email           = document.getElementById('email').value.trim();
+    const password        = document.getElementById('password').value.trim();
     const infoAdicional   = document.getElementById('info_adicional')?.value.trim();
 
-    // --- Validaciones en cliente ---
-    if (!nombre || !email || !password || !passwordConfirm) {
-        mostrarError('Los campos Nombre, Email y Contraseña son obligatorios.');
-        setBotonCargando(e.target, false);
-        return;
-    }
-
-    if (password !== passwordConfirm) {
-        mostrarError('Las contraseñas no coinciden.');
-        setBotonCargando(e.target, false);
-        return;
-    }
-
-    if (password.length < 6) {
-        mostrarError('La contraseña debe tener al menos 6 caracteres.');
-        setBotonCargando(e.target, false);
-        return;
-    }
-
-    // --- Construcción del birth_date desde la edad (aproximada al año actual) ---
     let birth_date = null;
     if (edad && !isNaN(edad) && Number(edad) > 0) {
         const anioNacimiento = new Date().getFullYear() - Number(edad);
         birth_date = `${anioNacimiento}-01-01`;
     }
 
-    // --- Construcción del body según el modelo de la API ---
     const body = {
         full_name: nombre,
         email,
         password,
-        birth_date,                          // null si no se ingresó edad
+        birth_date,
         metadata: {
             practica_deporte: practicaDeporte === 'si',
             sports: practicaDeporte === 'si'
                 ? [{ name: objetivo || 'general', frequency_per_week: 3 }]
                 : [],
-            objetivo:         objetivo        || null,
-            nivel:            nivel           || null,
-            info_adicional:   infoAdicional   || null
+            objetivo:       objetivo      || null,
+            nivel:          nivel         || null,
+            info_adicional: infoAdicional || null
         }
     };
 
@@ -216,43 +341,85 @@ async function manejarRegistro(e) {
             body: JSON.stringify(body)
         });
 
-        // Algunos backends retornan 201 en creación exitosa
         const dataRes = await response.json();
 
         if (dataRes.ok || response.status === 201) {
-            // ✅ Registro exitoso — redirigimos al login de usuario
-            alert('¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.');
-            window.location.href = 'loginC.html';
-
+            // Redirige al login con parámetro para mostrar mensaje de éxito
+            window.location.href = 'login.html?registro=ok';
         } else {
-            // ❌ Error controlado (ej: email ya existe)
-            mostrarError(dataRes.message || 'No se pudo completar el registro. Intenta nuevamente.');
+            const msg = dataRes.message || '';
+            if (msg.toLowerCase().includes('email') ||
+                msg.toLowerCase().includes('correo') ||
+                msg.toLowerCase().includes('exist')) {
+                mostrarCampoError('error-email', 'Este correo ya está registrado. Prueba con otro.');
+            } else {
+                mostrarErrorGeneral(msg || 'No se pudo completar el registro. Intenta nuevamente.');
+            }
         }
 
     } catch (error) {
         console.error('[SportClub] Error en registro:', error);
-
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            mostrarError('No se pudo conectar con el servidor. Verifica que el backend esté activo.');
+            mostrarErrorGeneral('No se pudo conectar con el servidor. Verifica que el backend esté activo.');
         } else {
-            mostrarError('Ocurrió un error inesperado. Intenta nuevamente.');
+            mostrarErrorGeneral('Ocurrió un error inesperado. Intenta nuevamente.');
         }
     } finally {
         setBotonCargando(e.target, false);
     }
 }
 
-// ------------------------------------------------------------
-//  PARTE 3 — PROTECCIÓN DE DASHBOARDS
-//  Se llama automáticamente si existe el elemento .dash-main
-//  en la página actual (es decir, estamos en un dashboard).
-// ------------------------------------------------------------
+// ============================================================
+//  PARTE 3 — RECUPERAR CONTRASEÑA
+// ============================================================
 
-/**
- * Verifica que exista un token y un usuario guardado.
- * Si no, redirige al index para que el usuario elija su login.
- * Además valida que el rol del usuario coincida con el dashboard actual.
- */
+function validarRecover() {
+    let valido = true;
+    const email = document.getElementById('email')?.value.trim();
+
+    limpiarCampoError('error-email');
+    if (!email) {
+        mostrarCampoError('error-email', 'El correo electrónico es obligatorio.');
+        valido = false;
+    } else if (!esEmailValido(email)) {
+        mostrarCampoError('error-email', 'Ingresa un correo electrónico válido.');
+        valido = false;
+    } else {
+        marcarValido('email');
+    }
+
+    return valido;
+}
+
+async function manejarRecover(e) {
+    e.preventDefault();
+    ocultarErrorGeneral();
+
+    const successEl = document.getElementById('success-msg');
+    if (successEl) successEl.style.display = 'none';
+
+    if (!validarRecover()) return;
+
+    setBotonCargando(e.target, true);
+
+    // Simulación: cuando el backend implemente /api/auth/recover,
+    // reemplazar el setTimeout por el fetch correspondiente.
+    setTimeout(() => {
+        setBotonCargando(e.target, false);
+        mostrarExito('✓ Si el correo existe, recibirás las instrucciones en breve.');
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.value = '';
+            emailInput.classList.remove('input-valido');
+        }
+        limpiarCampoError('error-email');
+    }, 800);
+}
+
+// ============================================================
+//  PARTE 4 — PROTECCIÓN DE DASHBOARDS
+// ============================================================
+
 function protegerDashboard() {
     const token = localStorage.getItem('token');
     const user  = JSON.parse(localStorage.getItem('user') || 'null');
@@ -262,59 +429,44 @@ function protegerDashboard() {
         return;
     }
 
-    // Detectamos qué dashboard es por el título de la página
     const titulo = document.title.toLowerCase();
 
-    const esDashboardAdmin = titulo.includes('admin');
-    const esDashboardCoach = titulo.includes('coach');
-    const esDashboardUser  = titulo.includes('usuario');
-
-    // Si el rol no corresponde al dashboard, redirigimos al correcto
-    if (esDashboardAdmin && user.role !== 'admin') {
+    if (titulo.includes('admin') && user.role !== 'admin') {
         window.location.href = RUTAS_POR_ROL[user.role] || 'index.html';
         return;
     }
-    if (esDashboardCoach && user.role !== 'coach') {
+    if (titulo.includes('coach') && user.role !== 'coach') {
         window.location.href = RUTAS_POR_ROL[user.role] || 'index.html';
         return;
     }
-    if (esDashboardUser && user.role !== 'user') {
+    if (titulo.includes('usuario') && user.role !== 'user') {
         window.location.href = RUTAS_POR_ROL[user.role] || 'index.html';
         return;
     }
 
-    // ✅ Todo OK — inyectamos el nombre del usuario donde corresponda
     inyectarNombreUsuario(user);
 }
 
-/**
- * Inyecta el nombre del usuario en los elementos del dashboard.
- * Busca: #coach-name, .datos p strong, y el texto del welcome-text.
- */
 function inyectarNombreUsuario(user) {
     const nombre = user.full_name || user.name || 'Usuario';
 
-    // Dashboard Coach: <strong id="coach-name">
     const coachName = document.getElementById('coach-name');
     if (coachName) coachName.textContent = nombre;
 
-    // Dashboard Usuario: <p><strong>Nombre:</strong> ...</p>
     const datosNombre = document.querySelector('.datos p strong');
     if (datosNombre) {
         datosNombre.parentElement.innerHTML = `<strong>Nombre:</strong> ${nombre}`;
     }
 
-    // Dashboard Usuario: email
     const datosEmail = document.querySelectorAll('.datos p');
     if (datosEmail.length > 1) {
         datosEmail[1].innerHTML = `<strong>Email:</strong> ${user.email}`;
     }
 }
 
-// ------------------------------------------------------------
-//  PARTE 4 — CERRAR SESIÓN
-//  Aplica a cualquier botón/enlace con clase .cerrar-sesion
-// ------------------------------------------------------------
+// ============================================================
+//  PARTE 5 — CERRAR SESIÓN
+// ============================================================
 
 function configurarCierreSesion() {
     document.querySelectorAll('.cerrar-sesion').forEach(btn => {
@@ -327,29 +479,63 @@ function configurarCierreSesion() {
     });
 }
 
-// ------------------------------------------------------------
-//  INICIALIZACIÓN — Se ejecuta cuando el DOM está listo
-// ------------------------------------------------------------
+// ============================================================
+//  PARTE 6 — AVISO DE REGISTRO EXITOSO EN LOGIN
+//  Si venimos de registerC con ?registro=ok mostramos aviso verde
+// ============================================================
+
+function mostrarAvisoRegistroExitoso() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('registro') !== 'ok') return;
+
+    const exito = document.createElement('p');
+    exito.className = 'login-success';
+    exito.style.display = 'block';
+    exito.textContent = '✓ Cuenta creada exitosamente. Ya puedes iniciar sesión.';
+
+    const form = document.getElementById('formUser');
+    if (form) form.insertAdjacentElement('beforebegin', exito);
+
+    // Limpiar el parámetro de la URL sin recargar
+    window.history.replaceState({}, '', 'login.html');
+}
+
+// ============================================================
+//  INICIALIZACIÓN
+// ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Configurar cerrar sesión (aplica en cualquier página)
     configurarCierreSesion();
 
-    // 2. Detectar y conectar formularios de LOGIN
-    const formAdmin = document.getElementById('formAdmin');
-    const formCoach = document.getElementById('formCoach');
-    const formUser  = document.getElementById('formUser');
+    // LOGIN
+    const formUser = document.getElementById('formUser');
+    if (formUser) {
+        formUser.addEventListener('submit', manejarLogin);
+        agregarLimpiezaEnTiempoReal('email',    'error-email');
+        agregarLimpiezaEnTiempoReal('password', 'error-password');
+        mostrarAvisoRegistroExitoso();
+    }
 
-    if (formAdmin) formAdmin.addEventListener('submit', manejarLogin);
-    if (formCoach) formCoach.addEventListener('submit', manejarLogin);
-    if (formUser)  formUser.addEventListener('submit', manejarLogin);
-
-    // 3. Detectar y conectar formulario de REGISTRO
+    // REGISTRO
     const formRegister = document.getElementById('formRegister');
-    if (formRegister) formRegister.addEventListener('submit', manejarRegistro);
+    if (formRegister) {
+        formRegister.addEventListener('submit', manejarRegistro);
+        agregarLimpiezaEnTiempoReal('nombre',           'error-nombre');
+        agregarLimpiezaEnTiempoReal('edad',             'error-edad');
+        agregarLimpiezaEnTiempoReal('email',            'error-email');
+        agregarLimpiezaEnTiempoReal('password',         'error-password');
+        agregarLimpiezaEnTiempoReal('password_confirm', 'error-password-confirm');
+    }
 
-    // 4. Si estamos en un dashboard, protegerlo
+    // RECUPERAR CONTRASEÑA
+    const formRecover = document.getElementById('formRecover');
+    if (formRecover) {
+        formRecover.addEventListener('submit', manejarRecover);
+        agregarLimpiezaEnTiempoReal('email', 'error-email');
+    }
+
+    // DASHBOARDS
     const esDashboard = document.querySelector('.dash-main');
     if (esDashboard) protegerDashboard();
 });

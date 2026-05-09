@@ -2,35 +2,43 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Recuperar contraseña - Usuario</title>
-    <link rel="stylesheet" href="estilosC.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña - SportClub</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="login-body">
 
-    <div class="contenedor">
-        <header>
-            <img src="logo.png" alt="Logo SportClub" class="logo">
+    <div class="login-contenedor">
+        <header class="login-header">
+            <img src="logo.png" alt="Logo SportClub" class="login-logo">
         </header>
 
         <main>
-            <h1>Recuperar contraseña</h1>
+            <h1 class="login-titulo">Recuperar contraseña</h1>
 
-            <form>
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" placeholder="Ingresa tu correo">
+            <form id="formRecover" class="login-form" novalidate>
 
-                <button type="submit">Enviar</button>
+                <div class="campo-grupo">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="Ingresa tu correo registrado" autocomplete="email">
+                    <span class="campo-error" id="error-email"></span>
+                </div>
+
+                <!-- Error general de API -->
+                <p id="error-msg" class="login-error"></p>
+
+                <!-- Mensaje de éxito (oculto por defecto, main.js lo muestra) -->
+                <p id="success-msg" class="login-success"></p>
+
+                <button type="submit" class="login-btn">Enviar instrucciones</button>
             </form>
 
-            <p style="margin-top: 15px; color: #0056b3; font-weight: bold; text-align: center;">
-                Si el correo existe, se enviaron las instrucciones.
-            </p>
-
-            <div class="enlaces">
-                <a href="loginC.html">Volver al inicio de sesión</a>
+            <div class="login-enlaces">
+                <a href="login.html">Volver al inicio de sesión</a>
             </div>
         </main>
     </div>
 
+    <script src="main.js"></script>
 </body>
 </html>
