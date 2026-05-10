@@ -22,9 +22,10 @@
             <li><a href="#">Mis Alumnos</a></li>
             <li><a href="#">Mi Horario</a></li>
             <li><a href="#">Reportes</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
         </ul>
         <div class="nav-actions">
-            <button class="btn-secundario">Editar Perfil</button>
+            <a href="perfil.html" class="btn-secundario">Editar Perfil</a>
             <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
         </div>
     </nav>
@@ -104,14 +105,17 @@
         </div>
     </main>
 
+    <script src="main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const user = JSON.parse(localStorage.getItem("user"));
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
             if (!user || user.role !== 'coach') {
                 window.location.href = 'index.html';
-            } else {
-                document.getElementById('coach-name').textContent = user.name;
+                return;
             }
+            const nombre = user.full_name || user.name || 'Coach';
+            const el = document.getElementById('coach-name');
+            if (el) el.textContent = nombre;
         });
     </script>
 </body>

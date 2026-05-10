@@ -19,13 +19,14 @@
     <nav class="dash-nav">
         <ul class="nav-links">
             <li><a href="#" class="active">Inicio</a></li>
-            <li><a href="#">Usuarios</a></li>
+            <li><a href="gestionUsuarios.html">Usuarios</a></li>
             <li><a href="#">Estadísticas</a></li>
             <li><a href="#">Reportes</a></li>
             <li><a href="#">Configuración</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
         </ul>
         <div class="nav-actions">
-            <button class="btn-secundario">Editar Perfil</button>
+            <a href="perfil.html" class="btn-secundario">Editar Perfil</a>
             <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
         </div>
     </nav>
@@ -50,22 +51,11 @@
 
         <div class="grid-admin">
             
-            <div class="card">
+            <div class="card card-gestion">
+                <div class="gestion-icon">👥</div>
                 <h3>Gestión de Usuarios</h3>
-                <div class="admin-search">
-                    <input type="text" placeholder="Buscar..." class="input-buscar">
-                </div>
-                <div class="admin-edit-form">
-                    <div class="form-row">
-                        <span>Nombre</span> <button class="btn-accion">Editar</button>
-                    </div>
-                    <div class="form-row">
-                        <span>Email</span> <button class="btn-accion">Editar</button>
-                    </div>
-                    <div class="form-row">
-                        <span>Rol</span> <button class="btn-accion">Editar</button>
-                    </div>
-                </div>
+                <p class="gestion-desc">Administra los usuarios del sistema: crea, edita y elimina cuentas de usuario, coach y administrador.</p>
+                <a href="gestionUsuarios.html" class="btn-ir-gestion">Ir a Gestión de Usuarios →</a>
             </div>
 
             <div class="card card-center">
@@ -128,5 +118,6 @@
         </div>
     </main>
 
+    <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - SportClub</title>
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body class="perfil-body">
+
+    <!-- HEADER — se rellena dinámicamente según rol -->
+    <header class="dash-header" id="perfil-header">
+        <div class="dash-logo">
+            <img src="logo.png" alt="SportClub">
+        </div>
+        <div class="dash-title">
+            <h1 id="header-titulo">MI PERFIL</h1>
+        </div>
+    </header>
+
+    <!-- NAV — se rellena dinámicamente según rol -->
+    <nav class="dash-nav" id="perfil-nav">
+        <ul class="nav-links" id="nav-links"></ul>
+        <div class="nav-actions">
+            <a href="#" id="nav-dashboard" class="btn-secundario">← Dashboard</a>
+            <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <main class="perfil-main">
+
+        <!-- BREADCRUMB -->
+        <nav class="breadcrumb">
+            <a href="#" id="breadcrumb-inicio">Inicio</a>
+            <span>›</span>
+            <span>Perfil</span>
+        </nav>
+
+        <div class="perfil-page-header">
+            <div class="perfil-page-title">
+                <span class="perfil-icon">👤</span>
+                <div>
+                    <h2>Mi Perfil</h2>
+                    <p>Gestiona tu información personal y preferencias de cuenta.</p>
+                </div>
+            </div>
+            <button class="btn-editar-perfil" id="btn-editar-toggle">✏️ Editar Perfil</button>
+        </div>
+
+        <div class="perfil-grid">
+
+            <!-- ================================================
+                 COLUMNA IZQUIERDA — Avatar + datos rápidos
+                 ================================================ -->
+            <aside class="perfil-sidebar">
+                <div class="avatar-grande">
+                    <span class="avatar-grande-icon">👤</span>
+                </div>
+                <h3 id="sidebar-nombre" class="sidebar-nombre">—</h3>
+                <p id="sidebar-rol-label" class="sidebar-rol-label">—</p>
+                <span id="sidebar-badge" class="perfil-badge">—</span>
+
+                <div class="sidebar-datos">
+                    <div class="sidebar-dato-item">
+                        <span class="dato-icono">✉️</span>
+                        <div>
+                            <small>Email</small>
+                            <p id="sidebar-email">—</p>
+                        </div>
+                    </div>
+                    <div class="sidebar-dato-item">
+                        <span class="dato-icono">📅</span>
+                        <div>
+                            <small>Fecha de nacimiento</small>
+                            <p id="sidebar-fecha">—</p>
+                        </div>
+                    </div>
+                    <div class="sidebar-dato-item">
+                        <span class="dato-icono">🛡️</span>
+                        <div>
+                            <small>Rol</small>
+                            <p id="sidebar-rol">—</p>
+                        </div>
+                    </div>
+                    <div class="sidebar-dato-item">
+                        <span class="dato-icono">🗓️</span>
+                        <div>
+                            <small>Fecha de registro</small>
+                            <p id="sidebar-registro">—</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ================================================
+                 COLUMNA DERECHA — Secciones editables
+                 ================================================ -->
+            <div class="perfil-contenido">
+
+                <!-- ---- SECCIÓN 1: Información Personal ---- -->
+                <section class="perfil-card" id="seccion-info">
+                    <div class="perfil-card-header">
+                        <h3>Información Personal</h3>
+                    </div>
+
+                    <!-- VISTA (modo lectura) -->
+                    <div id="vista-info" class="perfil-vista">
+                        <div class="vista-grid">
+                            <div class="vista-campo">
+                                <small>Nombre completo</small>
+                                <p id="vista-nombre">—</p>
+                            </div>
+                            <div class="vista-campo">
+                                <small>Email</small>
+                                <p id="vista-email">—</p>
+                            </div>
+                            <div class="vista-campo">
+                                <small>Fecha de nacimiento</small>
+                                <p id="vista-fecha">—</p>
+                            </div>
+                            <div class="vista-campo">
+                                <small>Deporte favorito</small>
+                                <p id="vista-deporte">—</p>
+                            </div>
+                        </div>
+                        <div class="vista-campo vista-campo-full">
+                            <small>Otros / Metadata</small>
+                            <p id="vista-metadata">—</p>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO (modo edición, oculto por defecto) -->
+                    <form id="form-info" class="perfil-form oculto" novalidate>
+                        <div class="form-grid">
+                            <div class="campo-grupo">
+                                <label for="edit-nombre">Nombre completo *</label>
+                                <input type="text" id="edit-nombre" placeholder="Tu nombre completo">
+                                <span class="campo-error" id="err-nombre"></span>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="edit-email">Email *</label>
+                                <input type="email" id="edit-email" placeholder="tu@email.com">
+                                <span class="campo-error" id="err-email"></span>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="edit-fecha">Fecha de nacimiento *</label>
+                                <input type="date" id="edit-fecha">
+                                <span class="campo-error" id="err-fecha"></span>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="edit-deporte">Deporte favorito</label>
+                                <input type="text" id="edit-deporte" placeholder="Ej: Fútbol">
+                                <span class="campo-error" id="err-deporte"></span>
+                            </div>
+                        </div>
+                        <div class="campo-grupo">
+                            <label for="edit-metadata">Otros / Metadata (intereses, habilidades, etc.)</label>
+                            <textarea id="edit-metadata" rows="3" placeholder="Me interesa..."></textarea>
+                            <span class="campo-error" id="err-metadata"></span>
+                        </div>
+
+                        <!-- Feedback de éxito -->
+                        <p class="perfil-success oculto" id="exito-info">✓ Perfil actualizado correctamente.</p>
+                        <p class="perfil-error-general oculto" id="error-info"></p>
+
+                        <div class="form-acciones">
+                            <button type="button" class="btn-cancelar" id="btn-cancelar-info">Cancelar</button>
+                            <button type="submit" class="btn-guardar">✓ Guardar cambios</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- ---- SECCIÓN 2: Cambiar Contraseña ---- -->
+                <section class="perfil-card" id="seccion-pass">
+                    <div class="perfil-card-header">
+                        <h3>Cambiar Contraseña</h3>
+                    </div>
+
+                    <form id="form-pass" class="perfil-form" novalidate>
+                        <div class="form-grid-3">
+                            <div class="campo-grupo">
+                                <label for="pass-actual">Contraseña actual *</label>
+                                <div class="input-password-wrap">
+                                    <input type="password" id="pass-actual" placeholder="Ingresa tu contraseña actual">
+                                    <button type="button" class="btn-ver-pass" data-target="pass-actual">👁</button>
+                                </div>
+                                <span class="campo-error" id="err-pass-actual"></span>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="pass-nueva">Nueva contraseña *</label>
+                                <div class="input-password-wrap">
+                                    <input type="password" id="pass-nueva" placeholder="Mínimo 8 caracteres">
+                                    <button type="button" class="btn-ver-pass" data-target="pass-nueva">👁</button>
+                                </div>
+                                <span class="campo-error" id="err-pass-nueva"></span>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="pass-confirmar">Confirmar nueva contraseña *</label>
+                                <div class="input-password-wrap">
+                                    <input type="password" id="pass-confirmar" placeholder="Repite tu nueva contraseña">
+                                    <button type="button" class="btn-ver-pass" data-target="pass-confirmar">👁</button>
+                                </div>
+                                <span class="campo-error" id="err-pass-confirmar"></span>
+                            </div>
+                        </div>
+
+                        <p class="pass-hint">ℹ La contraseña debe tener al menos 8 caracteres, incluir números y letras.</p>
+
+                        <p class="perfil-success oculto" id="exito-pass">✓ Contraseña actualizada correctamente.</p>
+                        <p class="perfil-error-general oculto" id="error-pass"></p>
+
+                        <div class="form-acciones form-acciones-right">
+                            <button type="submit" class="btn-actualizar-pass">🔒 Actualizar contraseña</button>
+                        </div>
+                    </form>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script src="perfil.js"></script>
+</body>
+</html>
