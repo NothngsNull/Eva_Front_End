@@ -1,15 +1,8 @@
-// ============================================================
-//  SportClub - main.js
-//  Maneja: Login + Registro + Recuperar contraseña
-//  Validaciones: inline por campo, sin alert()
-//  API Base: http://localhost:3000
-// ============================================================
+// main.js - login, registro y recuperar contraseña
 
 const API_BASE = 'http://localhost:3000';
 
-// ============================================================
-//  UTILIDADES DE VALIDACIÓN VISUAL
-// ============================================================
+// funciones para mostrar/ocultar errores en los campos
 
 /**
  * Muestra un error inline bajo un campo específico.
@@ -99,9 +92,7 @@ function setBotonCargando(form, cargando) {
     }
 }
 
-// ============================================================
-//  HELPERS DE VALIDACIÓN
-// ============================================================
+// funciones de validación reutilizables
 
 /** Valida formato de email */
 function esEmailValido(email) {
@@ -124,9 +115,7 @@ function agregarLimpiezaEnTiempoReal(inputId, errorId) {
     });
 }
 
-// ============================================================
-//  PARTE 1 — LOGIN
-// ============================================================
+// --- login ---
 
 const RUTAS_POR_ROL = {
     admin: 'dashboardA.html',
@@ -219,9 +208,7 @@ async function manejarLogin(e) {
     }
 }
 
-// ============================================================
-//  PARTE 2 — REGISTRO
-// ============================================================
+// --- registro ---
 
 function validarRegistro() {
     let valido = true;
@@ -369,9 +356,7 @@ async function manejarRegistro(e) {
     }
 }
 
-// ============================================================
-//  PARTE 3 — RECUPERAR CONTRASEÑA
-// ============================================================
+// --- recuperar contraseña ---
 
 function validarRecover() {
     let valido = true;
@@ -402,23 +387,31 @@ async function manejarRecover(e) {
 
     setBotonCargando(e.target, true);
 
-    // Simulación: cuando el backend implemente /api/auth/recover,
-    // reemplazar el setTimeout por el fetch correspondiente.
-    setTimeout(() => {
-        setBotonCargando(e.target, false);
+    const email = document.getElementById('email').value.trim();
+
+    try {
+        await fetch(`${API_BASE}/api/auth/recover`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        // Siempre mostramos el mismo mensaje por seguridad
         mostrarExito('✓ Si el correo existe, recibirás las instrucciones en breve.');
+    } catch (error) {
+        // Si el endpoint no está disponible igual mostramos el mensaje
+        mostrarExito('✓ Si el correo existe, recibirás las instrucciones en breve.');
+    } finally {
+        setBotonCargando(e.target, false);
         const emailInput = document.getElementById('email');
         if (emailInput) {
             emailInput.value = '';
             emailInput.classList.remove('input-valido');
         }
         limpiarCampoError('error-email');
-    }, 800);
+    }
 }
 
-// ============================================================
-//  PARTE 4 — PROTECCIÓN DE DASHBOARDS
-// ============================================================
+// --- protección de rutas según rol ---
 
 function protegerDashboard() {
     const token = localStorage.getItem('token');
@@ -464,9 +457,7 @@ function inyectarNombreUsuario(user) {
     }
 }
 
-// ============================================================
-//  PARTE 5 — CERRAR SESIÓN
-// ============================================================
+// --- cerrar sesión ---
 
 function configurarCierreSesion() {
     document.querySelectorAll('.cerrar-sesion').forEach(btn => {
@@ -479,10 +470,7 @@ function configurarCierreSesion() {
     });
 }
 
-// ============================================================
-//  PARTE 6 — AVISO DE REGISTRO EXITOSO EN LOGIN
-//  Si venimos de registerC con ?registro=ok mostramos aviso verde
-// ============================================================
+// muestra mensaje de éxito si viene de registrarse
 
 function mostrarAvisoRegistroExitoso() {
     const params = new URLSearchParams(window.location.search);
@@ -500,9 +488,7 @@ function mostrarAvisoRegistroExitoso() {
     window.history.replaceState({}, '', 'login.html');
 }
 
-// ============================================================
-//  INICIALIZACIÓN
-// ============================================================
+// inicialización según la página actual
 
 document.addEventListener('DOMContentLoaded', () => {
 

@@ -1,14 +1,8 @@
-// ============================================================
-//  perfil.js — Módulo de Perfil de Usuario
-//  Funciona para los 3 roles: user / coach / admin
-//  Depende de main.js (ya cargado antes en el HTML)
-// ============================================================
+// perfil.js - módulo de perfil para los 3 roles
 
 const API_BASE_PERFIL = 'http://localhost:3000';
 
-// ============================================================
-//  CONFIGURACIÓN POR ROL
-// ============================================================
+// configuración de nav y colores según el rol
 
 const CONFIG_ROL = {
     user: {
@@ -56,9 +50,7 @@ const CONFIG_ROL = {
     }
 };
 
-// ============================================================
-//  UTILIDADES
-// ============================================================
+// funciones de utilidad
 
 /** Formatea una fecha ISO o yyyy-mm-dd a dd/mm/yyyy */
 function formatearFecha(fechaStr) {
@@ -119,9 +111,7 @@ function esEmailValido(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// ============================================================
-//  INICIALIZACIÓN — cargar rol y datos del usuario
-// ============================================================
+// inicializa el módulo de perfil
 
 function inicializarPerfil() {
     // 1. Verificar sesión
@@ -166,10 +156,9 @@ function inicializarPerfil() {
         });
     });
 
-    // 9. Limpieza en tiempo real en formularios
+    // limpieza en tiempo real
     [
         ['edit-nombre',    'err-nombre'],
-        ['edit-email',     'err-email'],
         ['edit-fecha',     'err-fecha'],
         ['pass-actual',    'err-pass-actual'],
         ['pass-nueva',     'err-pass-nueva'],
@@ -181,9 +170,7 @@ function inicializarPerfil() {
     });
 }
 
-// ============================================================
-//  NAV DINÁMICO
-// ============================================================
+// construye el nav según el rol
 
 function construirNav(config, user) {
     // Header título
@@ -210,9 +197,7 @@ function construirNav(config, user) {
     }
 }
 
-// ============================================================
-//  CARGAR DATOS
-// ============================================================
+// carga datos frescos desde la API o usa los del localStorage
 
 async function cargarDatosUsuario(token, userLocal, config) {
     let user = userLocal;
@@ -237,9 +222,7 @@ async function cargarDatosUsuario(token, userLocal, config) {
     renderizarPerfil(user, config);
 }
 
-// ============================================================
-//  RENDERIZAR DATOS EN LA UI
-// ============================================================
+// rellena la interfaz con los datos del usuario
 
 function renderizarPerfil(user, config) {
     const nombre    = capitalizar(user.full_name || user.name || '');
@@ -287,9 +270,7 @@ function setVal(id, valor) {
     if (el) el.value = valor || '';
 }
 
-// ============================================================
-//  MODO EDICIÓN
-// ============================================================
+// activa y cancela el modo edición
 
 function activarModoEdicion() {
     ocultar('vista-info');
@@ -311,15 +292,12 @@ function cancelarEdicion() {
     ['err-nombre','err-email','err-fecha','err-deporte','err-metadata'].forEach(limpiarErrCampo);
 }
 
-// ============================================================
-//  VALIDACIÓN Y GUARDADO — Info Personal
-// ============================================================
+// validación y guardado de datos personales
 
 function validarInfoPersonal() {
     let valido = true;
 
     const nombre = document.getElementById('edit-nombre')?.value.trim();
-    const email  = document.getElementById('edit-email')?.value.trim();
     const fecha  = document.getElementById('edit-fecha')?.value;
 
     limpiarErrCampo('err-nombre');
@@ -331,17 +309,6 @@ function validarInfoPersonal() {
         valido = false;
     } else {
         marcarCampoValido('edit-nombre');
-    }
-
-    limpiarErrCampo('err-email');
-    if (!email) {
-        mostrarErrCampo('err-email', 'El email es obligatorio.');
-        valido = false;
-    } else if (!esEmailValido(email)) {
-        mostrarErrCampo('err-email', 'Email inválido. Ej: usuario@mail.com');
-        valido = false;
-    } else {
-        marcarCampoValido('edit-email');
     }
 
     limpiarErrCampo('err-fecha');
@@ -377,9 +344,9 @@ async function guardarInfoPersonal(e) {
     const deporte = document.getElementById('edit-deporte')?.value.trim();
     const metaOld = user.metadata || {};
 
+    // Solo se envían los campos editables — email y rol no se pueden cambiar
     const body = {
         full_name:  document.getElementById('edit-nombre').value.trim(),
-        email:      document.getElementById('edit-email').value.trim().toLowerCase(),
         birth_date: document.getElementById('edit-fecha').value,
         metadata: {
             ...metaOld,
@@ -391,7 +358,8 @@ async function guardarInfoPersonal(e) {
     };
 
     try {
-        const res = await fetch(`${API_BASE_PERFIL}/api/users/${user.id}`, {
+        // Editar perfil del usuario logueado
+        const res = await fetch(`${API_BASE_PERFIL}/api/auth/me`, {
             method:  'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -436,9 +404,7 @@ async function guardarInfoPersonal(e) {
     }
 }
 
-// ============================================================
-//  VALIDACIÓN Y GUARDADO — Cambiar Contraseña
-// ============================================================
+// validación y cambio de contraseña
 
 function validarCambioPass() {
     let valido = true;
@@ -505,8 +471,8 @@ async function cambiarContrasena(e) {
     };
 
     try {
-        // Intentamos PATCH o PUT a /api/users/:id con la contraseña
-        const res = await fetch(`${API_BASE_PERFIL}/api/users/${user.id}`, {
+        // Cambiar contraseña del usuario logueado
+        const res = await fetch(`${API_BASE_PERFIL}/api/auth/me/password`, {
             method:  'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -548,7 +514,5 @@ async function cambiarContrasena(e) {
     }
 }
 
-// ============================================================
-//  ARRANQUE
-// ============================================================
+// arranque
 document.addEventListener('DOMContentLoaded', inicializarPerfil);

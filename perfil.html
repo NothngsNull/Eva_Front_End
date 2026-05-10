@@ -138,9 +138,10 @@
                                 <span class="campo-error" id="err-nombre"></span>
                             </div>
                             <div class="campo-grupo">
-                                <label for="edit-email">Email *</label>
-                                <input type="email" id="edit-email" placeholder="tu@email.com">
-                                <span class="campo-error" id="err-email"></span>
+                                <label for="edit-email">Email</label>
+                                <!-- El email no es editable por el usuario -->
+                                <input type="email" id="edit-email" disabled style="background:#f1f5f9;color:#94a3b8;cursor:not-allowed;">
+                                <small style="font-size:11px;color:#94a3b8;margin-top:2px;">El email no puede modificarse.</small>
                             </div>
                             <div class="campo-grupo">
                                 <label for="edit-fecha">Fecha de nacimiento *</label>
