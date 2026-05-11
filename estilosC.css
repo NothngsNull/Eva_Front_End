@@ -418,3 +418,72 @@ td {
 .card-bottom {
     margin-top: 40px;
 }
+/* ============================================================
+   VALIDACIÓN DE FORMULARIOS — registerC.html
+   ============================================================ */
+
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4px;
+}
+
+.campo-grupo input,
+.campo-grupo select,
+.campo-grupo textarea {
+    margin-bottom: 4px;
+}
+
+.campo-error {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c0392b;
+    min-height: 18px;
+    margin-bottom: 8px;
+    padding-left: 2px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+.campo-error.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Error general (#error-msg en register) */
+.campo-error-general {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 0;
+    min-height: 0;
+    font-size: 13px;
+    padding: 8px 10px;
+    background-color: #fdf0ef;
+    border-radius: 6px;
+    border: 1px solid #f5c6c2;
+}
+
+.campo-error-general.visible {
+    margin-bottom: 10px;
+}
+
+/* Input inválido */
+input.input-invalido,
+select.input-invalido,
+textarea.input-invalido {
+    border-color: #e74c3c !important;
+    background-color: #fff8f8 !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+/* Input válido */
+input.input-valido,
+select.input-valido {
+    border-color: #27ae60 !important;
+    background-color: #f6fff9 !important;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.08) !important;
+}

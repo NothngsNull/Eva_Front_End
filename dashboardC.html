@@ -22,15 +22,16 @@
             <li><a href="#">Clases</a></li>
             <li><a href="#">Reservas</a></li>
             <li><a href="#">Mi Progreso</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
         </ul>
         <div class="nav-actions">
-            <button class="btn-secundario">Editar Perfil</button>
+            <a href="perfil.html" class="btn-secundario">Editar Perfil</a>
             <a href="index.html" class="btn-primario cerrar-sesion">Cerrar Sesión</a>
         </div>
     </nav>
 
     <main class="dash-main">
-        <h2 class="welcome-text">Bienvenido a SportClub</h2>
+        <h2 class="welcome-text">Bienvenido, <span id="user-nombre-bienvenida">Deportista</span></h2>
 
         <div class="grid-top">
             
@@ -41,8 +42,8 @@
                         <span class="avatar-icon">👤</span>
                     </div>
                     <div class="datos">
-                        <p><strong>Nombre:</strong> Juan Pérez</p>
-                        <p><strong>Email:</strong> juan@mail.com</p>
+                        <p><strong>Nombre:</strong> <span id="dash-nombre">—</span></p>
+                        <p><strong>Email:</strong> <span id="dash-email">—</span></p>
                     </div>
                 </div>
                 <div class="objetivos">
@@ -53,6 +54,7 @@
                         <li>Asistir 3 veces por semana</li>
                     </ul>
                 </div>
+                <a href="perfil.html" class="btn-reservar" style="display:inline-block;margin-top:12px;text-decoration:none;text-align:center;">Ver mi perfil completo →</a>
             </div>
             <div class="progress-container">
                 <h3>Tu Progreso General (Inventado)</h3>
@@ -123,32 +125,20 @@
 
         
     </main>
+    <script src="main.js"></script>
     <script>
+        // Inyección de nombre del usuario en el dashboard
         document.addEventListener('DOMContentLoaded', () => {
-            // 6) Mostrar el nombre del usuario en el dashboard
-            const userData = JSON.parse(localStorage.getItem("user"));
-        
-            if (!userData) {
-                window.location.href = 'index.html'; // Protege la página si no hay login
-                return;
-            }
-        
-            // Busca dónde poner el nombre según tu HTML actual
-            const namePlaceholder = document.querySelector('.welcome-text strong') || 
-                                   document.querySelector('.datos p strong');
-            
-            if (namePlaceholder) {
-                namePlaceholder.parentElement.innerHTML = namePlaceholder.tagName === 'STRONG' 
-                    ? userData.name 
-                    : `<strong>Nombre:</strong> ${userData.name}`;
-            }
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            if (!user) { window.location.href = 'index.html'; return; }
+            const nombre = user.full_name || user.name || 'Deportista';
+            const el = document.getElementById('user-nombre-bienvenida');
+            if (el) el.textContent = nombre.split(' ')[0]; // Solo primer nombre en bienvenida
+            const dashNombre = document.getElementById('dash-nombre');
+            if (dashNombre) dashNombre.textContent = nombre;
+            const dashEmail = document.getElementById('dash-email');
+            if (dashEmail) dashEmail.textContent = (user.email || '').toLowerCase();
         });
-        
-        // Configura el botón de cerrar sesión
-        document.querySelector('.cerrar-sesion')?.addEventListener('click', () => {
-            localStorage.removeItem("user");
-        });
-        </script>
-
+    </script>
 </body>
 </html>
