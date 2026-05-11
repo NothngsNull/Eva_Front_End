@@ -37,7 +37,7 @@
         <div class="stats-container">
             <div class="stat-card">
                 <h4>Usuarios Activos</h4>
-                <p class="stat-number">1,245</p>
+                <p class="stat-number" id="stat-total-usuarios">—</p>
             </div>
             <div class="stat-card">
                 <h4>Total Clases</h4>
@@ -71,27 +71,9 @@
                                 <th>Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="avatar-sm">👤</span></td>
-                                <td>Juan Pérez</td>
-                                <td>juan@mail.com</td>
-                                <td><span class="badge badge-user">Usuario</span></td>
-                                <td><button class="btn-accion">Editar</button></td>
-                            </tr>
-                            <tr>
-                                <td><span class="avatar-sm">👤</span></td>
-                                <td>Roberto Coach</td>
-                                <td>roberto@mail.com</td>
-                                <td><span class="badge badge-coach">Coach</span></td>
-                                <td><button class="btn-accion">Editar</button></td>
-                            </tr>
-                            <tr>
-                                <td><span class="avatar-sm">👤</span></td>
-                                <td>Admin Root</td>
-                                <td>admin@mail.com</td>
-                                <td><span class="badge badge-admin">Admin</span></td>
-                                <td><button class="btn-accion">Editar</button></td>
+                        <tbody id="tbody-usuarios-dash">
+                            <tr id="fila-cargando">
+                                <td colspan="5" style="text-align:center;color:#999;padding:20px;">Cargando usuarios...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -119,5 +101,75 @@
     </main>
 
     <script src="main.js"></script>
+    <script>
+        // carga los usuarios desde la API y los muestra en la tabla del dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const tbody = document.getElementById('tbody-usuarios-dash');
+            const statTotal = document.getElementById('stat-total-usuarios');
+
+            if (!token) return;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+                const usuarios = data.data || data.users || data || [];
+
+                // actualizar el contador de usuarios activos
+                if (statTotal) statTotal.textContent = usuarios.length;
+
+                // limpiar la fila de carga
+                tbody.innerHTML = '';
+
+                if (usuarios.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:20px;">No hay usuarios registrados.</td></tr>';
+                    return;
+                }
+
+                // mostrar solo los primeros 5 para no llenar la tabla
+                const lista = usuarios.slice(0, 5);
+
+                lista.forEach(u => {
+                    const rol = u.role || 'user';
+                    const nombre = u.full_name || u.name || '—';
+                    const email = (u.email || '—').toLowerCase();
+
+                    // badge de color según el rol
+                    const badgeClass = rol === 'admin' ? 'badge-admin' : rol === 'coach' ? 'badge-coach' : 'badge-user';
+                    const badgeTxt  = rol === 'admin' ? 'Admin' : rol === 'coach' ? 'Coach' : 'Usuario';
+
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td><span class="avatar-sm">👤</span></td>
+                        <td>${nombre}</td>
+                        <td>${email}</td>
+                        <td><span class="badge ${badgeClass}">${badgeTxt}</span></td>
+                        <td><a href="gestionUsuarios.html" class="btn-accion">Editar</a></td>
+                    `;
+                    tbody.appendChild(fila);
+                });
+
+                // si hay más de 5, agregar fila de enlace
+                if (usuarios.length > 5) {
+                    const filaExtra = document.createElement('tr');
+                    filaExtra.innerHTML = `
+                        <td colspan="5" style="text-align:center;padding:10px;">
+                            <a href="gestionUsuarios.html" style="color:#4b0082;font-size:13px;font-weight:600;text-decoration:none;">
+                                Ver todos los usuarios (${usuarios.length}) →
+                            </a>
+                        </td>
+                    `;
+                    tbody.appendChild(filaExtra);
+                }
+
+            } catch (err) {
+                // si no hay conexión con la API, muestra mensaje
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#c00;padding:20px;font-size:13px;">No se pudo conectar con el servidor.</td></tr>';
+            }
+        });
+    </script>
 </body>
 </html>

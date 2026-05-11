@@ -1,6 +1,6 @@
 /* ============================================================
    gestionUsuarios.css — Módulo de Gestión de Usuarios (Admin)
-   Paleta: morado/rojo corporativo del dashboard Admin
+
    ============================================================ */
 
 :root {
@@ -65,8 +65,9 @@ body {
 .gu-brand-logo {
     height: 32px;
     width: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
+    /* el logo original es oscuro, brighten(10) lo aclara sin distorsionarlo */
+    filter: brightness(10);
+    opacity: 0.92;
 }
 
 .gu-brand-txt {
