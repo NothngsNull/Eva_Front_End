@@ -1,0 +1,34 @@
+
+Documentación de Uso de IA 
+Herramienta utilizada: Gemini
+Fecha de desarrollo: 11 de Abril de 2026
+
+1. Generación de Landing Page y Estructura Base
+Prompt utilizado: "Crear una página de inicio en HTML y CSS para un club deportivo usando los textos proporcionados por el cliente y la paleta corporativa estricta (Morado oscuro, Amarillo acento, Blanco)."
+Resultado generado: Código base del index.html y style.css con la estructura semántica (header, main, section, footer).
+Modificaciones realizadas: Se transformaron los botones estáticos del <header> (que originalmente eran etiquetas <button>) en etiquetas <a> funcionales (<a href="loginC.html">) para permitir la navegación hacia los diferentes módulos de login.
+Justificación: El código generado servía visualmente, pero se necesitaba que la Landing Page actuara como el enrutador principal del proyecto para cumplir con la rúbrica de interconexión de módulos.
+
+2. Adaptación de Login y Registro de Usuario (Tema Azul)
+Prompt utilizado: "Adaptar el código existente de mi login y registro para el perfil de Cliente/Usuario, aplicando una nueva paleta de colores (Azul) y asegurando que contenga campos específicos."
+Resultado generado: Vistas loginC.html, registerC.html y estilosC.css.
+Modificaciones realizadas: La IA generó inicialmente un registro muy simplificado. Se modificó el código para reincorporar toda la estructura original del formulario (Edad, Deporte, Objetivo, Nivel) y se integró un área de texto adicional. Además, se configuró el atributo action del formulario (<form action="dashboardC.html">) para simular la redirección.
+Justificación: Era obligatorio mantener la captura de datos completa del usuario final para la gestión del club. La redirección del formulario era necesaria para demostrar la navegación sin usar JavaScript.
+
+3. Lógica y Vistas de Staff (Coach y Administrador)
+Prompt utilizado: "Análisis de requerimientos: ¿El Coach y el Administrador deben tener página de registro? Generar los logins diferenciados (Verde para Coach, Rojo/Morado para Admin)."
+Resultado generado: Confirmación de la lógica del sistema y generación de vistas de login separadas (loginCO.html, loginA.html).
+Modificaciones realizadas: Se eliminaron conscientemente los enlaces de "Registrarse" en estas vistas. Se ajustaron los colores mediante CSS y se vincularon los accesos directamente a sus respectivos dashboards mediante la etiqueta <form>.
+Justificación: Tras analizar la lógica del negocio, se determinó que por seguridad el Staff no se auto-registra, sino que es dado de alta internamente. Se adaptaron las vistas para reflejar este nivel de acceso restringido.
+
+4. Estructuración de Dashboards mediante Bocetos (Wireframes)
+Prompt utilizado: "Crear dashboards para Usuario, Coach y Admin basándose en las imágenes de los bocetos entregados, usando CSS para organizar la información (tarjetas, tablas, perfil) respetando la coherencia visual y colores de cada rol."
+Resultado generado: Tres archivos HTML (dashboardC, dashboardCO, dashboardA) organizados con CSS Grid y Flexbox.
+Modificaciones realizadas:
+
+Se ajustaron los márgenes CSS (margin-top: 40px en .card-bottom) para separar bloques de contenido que visualmente quedaron muy juntos.
+
+Se añadió manualmente un componente de "Barra de Progreso" simulada en el dashboard de usuario usando un div con anchos porcentuales.
+
+Se conectaron todos los botones de "Cerrar sesión" para retornar al index.html.
+Justificación: La IA no siempre interpreta el espaciado ideal de un boceto, por lo que se ajustó el CSS para mejorar la jerarquía y el "respiro" visual. La barra de progreso se implementó para cumplir con el 100% de los elementos del wireframe del cliente, y los enlaces de cierre de sesión unificaron la experiencia del prototipo.

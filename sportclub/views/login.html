@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión - SportClub</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="login-body">
+
+    <div class="login-contenedor">
+        <header class="login-header">
+            <img src="../assets/logo.png" alt="Logo SportClub" class="login-logo">
+        </header>
+
+        <main>
+            <h1 class="login-titulo">Iniciar Sesión</h1>
+
+            <form id="formUser" class="login-form" novalidate>
+
+                <div class="campo-grupo">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="Ingresa tu correo" autocomplete="email">
+                    <span class="campo-error" id="error-email"></span>
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresa tu contraseña" autocomplete="current-password">
+                    <span class="campo-error" id="error-password"></span>
+                </div>
+
+                <!-- Error general: respuesta de API (credenciales incorrectas, servidor, etc.) -->
+                <p id="error-msg" class="login-error"></p>
+
+                <button type="submit" class="login-btn">Ingresar</button>
+            </form>
+
+            <div class="login-enlaces">
+                <a href="recoverC.html">¿Olvidaste tu contraseña?</a>
+                <span>|</span>
+                <a href="registerC.html">Registrarse</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

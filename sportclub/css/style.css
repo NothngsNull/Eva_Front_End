@@ -1,0 +1,564 @@
+/* ============================================================
+   style.css — SportClub
+   Contiene: Landing Page + Login Unificado
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   VARIABLES CORPORATIVAS
+   ------------------------------------------------------------ */
+:root {
+    --color-principal: #2E1A47;   /* Morado oscuro */
+    --color-acento:    #F2B705;   /* Amarillo / dorado */
+    --color-base:      #FFFFFF;   /* Blanco */
+    --color-texto:     #333333;
+
+    /* Variantes útiles */
+    --color-principal-oscuro: #1a0f2e;
+    --color-acento-hover:     #d9a404;
+    --color-sombra:           rgba(46, 26, 71, 0.25);
+}
+
+/* ------------------------------------------------------------
+   RESET BÁSICO
+   ------------------------------------------------------------ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--color-base);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+/* ============================================================
+   LANDING PAGE — NAVBAR
+   ============================================================ */
+
+/* Contenedor del logo en la navbar */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-principal);
+    padding: 15px 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.login-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Botones de la navbar */
+.btn {
+    padding: 10px 24px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    border: none;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-base);
+    border: 2px solid var(--color-acento);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-acento);
+    color: var(--color-principal);
+}
+
+.btn-solid {
+    background-color: var(--color-acento);
+    color: var(--color-principal);
+    border: 2px solid var(--color-acento);
+}
+
+.btn-solid:hover {
+    background-color: var(--color-acento-hover);
+    border-color: var(--color-acento-hover);
+}
+
+/* ============================================================
+   LANDING PAGE — HERO
+   ============================================================ */
+.hero {
+    background-color: var(--color-principal);
+    color: var(--color-base);
+    text-align: center;
+    padding: 120px 20px;
+    border-bottom: 8px solid var(--color-acento);
+    background-image: linear-gradient(
+        rgba(46, 26, 71, 0.9),
+        rgba(46, 26, 71, 0.9)
+    ),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    color: var(--color-acento);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.hero h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    font-weight: 400;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-style: italic;
+    color: #e0e0e0;
+}
+
+/* Contenedor interno del hero */
+.hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   LANDING PAGE — CONTENEDORES GENERALES
+   ============================================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.section-title {
+    color: var(--color-principal);
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-acento);
+    margin: 10px auto 0;
+}
+
+/* ============================================================
+   LANDING PAGE — SECCIÓN ABOUT
+   ============================================================ */
+.about {
+    background-color: #f4f4f9;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: var(--color-base);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    border-top: 5px solid var(--color-acento);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    color: var(--color-principal);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.card p {
+    color: #555;
+    font-size: 1.05rem;
+}
+
+/* ============================================================
+   LANDING PAGE — SECCIÓN VISIÓN
+   ============================================================ */
+.vision {
+    background-color: var(--color-base);
+}
+
+.vision-box {
+    background-color: var(--color-principal);
+    color: var(--color-base);
+    padding: 60px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px var(--color-sombra);
+    position: relative;
+}
+
+.vision-box h2 {
+    color: var(--color-acento);
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+.vision-box p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   LANDING PAGE — FOOTER
+   ============================================================ */
+footer {
+    background-color: var(--color-principal-oscuro);
+    color: var(--color-base);
+    text-align: center;
+    padding: 25px;
+    border-top: 3px solid var(--color-acento);
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   LOGIN UNIFICADO — login.html
+   Paleta corporativa: Morado oscuro + Amarillo dorado
+   ============================================================ */
+
+/* Body exclusivo del login — sobreescribe el body base */
+body.login-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    /* Degradado corporativo: morado oscuro profundo */
+    background: linear-gradient(135deg, var(--color-principal), var(--color-principal-oscuro));
+}
+
+/* Tarjeta central del login */
+.login-contenedor {
+    width: 380px;
+    max-width: 100%;
+    background-color: var(--color-base);
+    padding: 40px 35px;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    /* Línea dorada superior como detalle corporativo */
+    border-top: 5px solid var(--color-acento);
+}
+
+/* Logo dentro del login */
+.login-header {
+    margin-bottom: 10px;
+}
+
+.login-logo {
+    display: block;
+    margin: 0 auto 10px auto;
+    width: 220px;
+    height: auto;
+}
+
+/* Título del login */
+.login-titulo {
+    color: var(--color-principal);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+}
+
+/* Formulario: alineación a la izquierda para labels e inputs */
+.login-form {
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 11px 13px;
+    margin-bottom: 18px;
+    border: 1.5px solid #d0c8dc;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-texto);
+    background-color: #faf9fc;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Focus con acento corporativo (morado) */
+.login-form input:focus {
+    outline: none;
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgba(46, 26, 71, 0.12);
+    background-color: var(--color-base);
+}
+
+/* Mensaje de error */
+.login-error {
+    display: none;
+    color: #c0392b;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 12px;
+    padding: 8px 10px;
+    background-color: #fdf0ef;
+    border-radius: 6px;
+    border: 1px solid #f5c6c2;
+}
+
+/* Botón principal: amarillo dorado corporativo */
+.login-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    background-color: var(--color-acento);
+    color: var(--color-principal);
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.login-btn:hover {
+    background-color: var(--color-acento-hover);
+    transform: translateY(-1px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Estado deshabilitado (mientras carga) */
+.login-btn:disabled {
+    background-color: #c8b060;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Links de recuperar y registrarse */
+.login-enlaces {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.login-enlaces a {
+    color: var(--color-principal);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.login-enlaces a:hover {
+    color: var(--color-acento-hover);
+    text-decoration: underline;
+}
+
+.login-enlaces span {
+    margin: 0 10px;
+    color: #aaa;
+}
+
+/* ============================================================
+   RESPONSIVE — Login y Landing
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Navbar */
+    .navbar {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .login-buttons {
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.82rem;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 80px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero p {
+        font-size: 1.05rem;
+    }
+
+    /* Vision */
+    .vision-box {
+        padding: 40px 25px;
+    }
+
+    /* Login */
+    .login-contenedor {
+        width: 100%;
+        padding: 32px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .login-logo {
+        width: 180px;
+    }
+}
+
+/* ============================================================
+   VALIDACIÓN DE FORMULARIOS — ESTILOS INLINE
+   Aplica a login.html, recoverC.html (via style.css)
+   y a registerC.html (via estilosC.css — ver abajo)
+   ============================================================ */
+
+/* Contenedor de cada campo: apila label → input → span de error */
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4px;
+}
+
+/* El input/select dentro de un campo-grupo no necesita margin-bottom
+   porque el span de error actúa como espaciador */
+.campo-grupo input,
+.campo-grupo select,
+.campo-grupo textarea {
+    margin-bottom: 4px;
+}
+
+/* Span de error inline — oculto por defecto */
+.campo-error {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c0392b;
+    min-height: 18px;           /* Reserva espacio para evitar saltos de layout */
+    margin-bottom: 10px;
+    padding-left: 2px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+/* Clase añadida por JS cuando hay un error */
+.campo-error.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Error general de API (el #error-msg que ya existía) */
+.login-error {
+    display: none;
+    color: #c0392b;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 12px;
+    margin-top: 4px;
+    padding: 8px 10px;
+    background-color: #fdf0ef;
+    border-radius: 6px;
+    border: 1px solid #f5c6c2;
+}
+
+/* Mensaje de éxito (recover + registro exitoso en login) */
+.login-success {
+    display: none;
+    color: #1e6b3a;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    background-color: #eafaf1;
+    border-radius: 6px;
+    border: 1px solid #a9dfbf;
+}
+
+/* Input con error — borde rojo */
+.login-form input.input-invalido,
+.login-form select.input-invalido {
+    border-color: #e74c3c !important;
+    background-color: #fff8f8;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Input válido — borde verde suave */
+.login-form input.input-valido,
+.login-form select.input-valido {
+    border-color: #27ae60 !important;
+    background-color: #f6fff9;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.08);
+}
